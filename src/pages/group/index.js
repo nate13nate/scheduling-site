@@ -13,6 +13,7 @@ const GroupPage = () => {
     const [members, setMembers] = useState([]);
     const [userId, setUserId] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
+    const [adminSet, setAdminSet] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
 
     const id = useParams()['id'];
@@ -39,12 +40,13 @@ const GroupPage = () => {
             .then(({ data }) => setMembers(data));
         
         axios.get(`${DB_API}/user/${token}/admin`)
-            .then(({ data }) => setIsAdmin(data.admin));
+            .then(({ data }) => setIsAdmin(data.admin))
+            .then(() => setAdminSet(true));
     }, [id]);
 
     useEffect(() => {
-        if (members.length > 0 && userId !== '' && !members.some(({ id }) => id === userId)) navigator('/');
-    }, [userId, members, navigator]);
+        if (adminSet && !isAdmin && members.length > 0 && userId !== '' && !members.some(({ id }) => id === userId)) navigator('/');
+    }, [userId, members, adminSet, isAdmin, navigator]);
 
     const addUserToEvent = async (id) => {
         const event = group.events.find(value => value._id.$oid === id);

@@ -13,6 +13,7 @@ const EventPage = () => {
     const [members, setMembers] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [adminSet, setAdminSet] = useState(false);
     const [userId, setUserId] = useState('');
 
     const id = useParams()['id'];
@@ -39,12 +40,13 @@ const EventPage = () => {
             .then(({ data }) => setUserId(data));
         
             axios.get(`${DB_API}/user/${token}/admin`)
-                .then(({ data }) => setIsAdmin(data.admin));
+                .then(({ data }) => setIsAdmin(data.admin))
+                .then(() => setAdminSet(true));
     }, [id]);
 
     useEffect(() => {
-        if (members.length > 0 && userId !== '' && !members.some(({ id }) => id === userId)) navigator('/');
-    }, [userId, members, navigator]);
+        if (adminSet && !isAdmin && members.length > 0 && userId !== '' && !members.some(({ id }) => id === userId)) navigator('/');
+    }, [userId, members, adminSet, isAdmin, navigator]);
 
     const { owners = [] } = event;
 
