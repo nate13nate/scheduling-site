@@ -1,0 +1,9 @@
+.card {
+    border: thin solid;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.cardTitle {
+    font-weight: bold;
+}

@@ -1,0 +1,8 @@
+.infoBoardContainer {
+    flex: 1
+}
+
+.infoCardsContainer {
+    display: flex;
+    flex-direction: column;
+}
